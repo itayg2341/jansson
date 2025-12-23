@@ -485,6 +485,11 @@ if (NOT JANSSON_WITHOUT_TESTS)
    # Test suites.
    #
    if (CMAKE_COMPILER_IS_GNUCC)
+      add_definitions(-fstack-protector -D_FORTIFY_SOURCE=2 -fPIE)
+      set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
+      set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -pie")
+   endif()
+   if (CMAKE_COMPILER_IS_GNUCC)
       add_definitions(-Wall -Wextra -Wdeclaration-after-statement)
    endif ()
 
