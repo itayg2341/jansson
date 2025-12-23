@@ -61,12 +61,6 @@ endif()
 if (MSVC)
    # Turn off Microsofts "security" warnings.
    add_definitions( "/W3 /D_CRT_SECURE_NO_WARNINGS /wd4005 /wd4996 /nologo" )
-   # Security hardening flags
-   add_definitions( "-fstack-protector-strong" )
-   add_definitions( "-D_FORTIFY_SOURCE=2" )
-   add_definitions( "-fPIE" )
-   add_definitions( "-Wformat" )
-   add_definitions( "-Wformat-security" )
 
    if (JANSSON_STATIC_CRT)
       set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} /MT")

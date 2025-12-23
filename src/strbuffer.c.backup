@@ -58,12 +58,6 @@ int strbuffer_append_byte(strbuffer_t *strbuff, char byte) {
 }
 
 int strbuffer_append_bytes(strbuffer_t *strbuff, const char *data, size_t size) {
-    if (size == 0)
-        return 0;
-        
-    if (data == NULL)
-        return -1;
-        
     if (size >= strbuff->size - strbuff->length) {
         size_t new_size;
         char *new_value;
@@ -84,10 +78,6 @@ int strbuffer_append_bytes(strbuffer_t *strbuff, const char *data, size_t size) 
         strbuff->size = new_size;
     }
 
-    /* bounds checking - ensure we don't write past buffer */
-    if (strbuff->length + size >= strbuff->size)
-        return -1;
-        
     memcpy(strbuff->value + strbuff->length, data, size);
     strbuff->length += size;
     strbuff->value[strbuff->length] = '\0';
