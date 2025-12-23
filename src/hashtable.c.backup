@@ -230,10 +230,6 @@ int hashtable_set(hashtable_t *hashtable, const char *key, size_t key_len,
     bucket_t *bucket;
     size_t hash, index;
 
-    /* input validation */
-    if (!hashtable || !key || key_len == 0 || !value)
-        return -1;
-
     /* rehash if the load ratio exceeds 1 */
     if (hashtable->size >= hashsize(hashtable->order))
         if (hashtable_do_rehash(hashtable))
@@ -266,10 +262,6 @@ void *hashtable_get(hashtable_t *hashtable, const char *key, size_t key_len) {
     size_t hash;
     bucket_t *bucket;
 
-    /* input validation */
-    if (!hashtable || !key || key_len == 0)
-        return NULL;
-
     hash = hash_str(key, key_len);
     bucket = &hashtable->buckets[hash & hashmask(hashtable->order)];
 
@@ -281,13 +273,7 @@ void *hashtable_get(hashtable_t *hashtable, const char *key, size_t key_len) {
 }
 
 int hashtable_del(hashtable_t *hashtable, const char *key, size_t key_len) {
-    size_t hash;
-
-    /* input validation */
-    if (!hashtable || !key || key_len == 0)
-        return -1;
-
-    hash = hash_str(key, key_len);
+    size_t hash = hash_str(key, key_len);
     return hashtable_do_del(hashtable, key, key_len, hash);
 }
 

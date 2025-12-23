@@ -39,14 +39,8 @@ void jsonp_free(void *ptr) {
 void *jsonp_realloc(void *ptr, size_t originalSize, size_t newSize) {
     void *newMemory;
 
-    if (do_realloc) {
-        newMemory = (*do_realloc)(ptr, newSize);
-        if (newMemory == NULL && newSize != 0) {
-            // realloc failed, original ptr is still valid
-            return NULL;
-        }
-        return newMemory;
-    }
+    if (do_realloc)
+        return (*do_realloc)(ptr, newSize);
 
     // realloc emulation using malloc and free
     if (newSize == 0) {
@@ -57,13 +51,9 @@ void *jsonp_realloc(void *ptr, size_t originalSize, size_t newSize) {
     } else {
         newMemory = (*do_malloc)(newSize);
 
-        if (newMemory == NULL) {
-            // malloc failed, original ptr is still valid
-            return NULL;
-        }
-
-        if (ptr != NULL) {
+        if ((newMemory != NULL) && (ptr != NULL)) {
             memcpy(newMemory, ptr, (originalSize < newSize) ? originalSize : newSize);
+
             (*do_free)(ptr);
         }
 
